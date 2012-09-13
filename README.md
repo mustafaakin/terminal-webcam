@@ -6,9 +6,9 @@ a webcam that can be run on a bare terminal
 setup
 -----
 
-Tested on Ubuntu (actually all of these are not needed, I just don't remember what I installed)
+Tested on Ubuntu 12.04
 
-	sudo apt-get install libopencv-* python-opencv libncures5 libncurses5-dev python-dev 
+	sudo apt-get install python-opencv libncures5 
 
 usage
 -----
