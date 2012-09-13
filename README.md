@@ -14,5 +14,5 @@ usage
 -----
 	
 	python capture.py 
-
+	python capture.py WIDTH_IN_CHARS
 
