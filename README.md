@@ -1,7 +1,7 @@
 terminal-webcam
 ===============
 
-a webcam that can be run on a bare terminal
+a webcam that can be run on a bare terminal, please maximize your terminals!
 
 setup
 -----
@@ -15,4 +15,7 @@ usage
 	
 	python capture.py 
 	python capture.py WIDTH_IN_CHARS
+
+	# For colored version which may be slower, needs optimizing
+	export TERM=xterm-256color && python color.py 70
 
