@@ -24,4 +24,4 @@ demo
 ----
 
 
-<iframe src="http://showterm.io/b90dc46e31526ab227f36" width="100%"></iframe>
+<a href="http://showterm.io/b90dc46e31526ab227f36">http://showterm.io/1e036bb3ba91b8cf40335</a>
