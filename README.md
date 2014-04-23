@@ -8,7 +8,7 @@ setup
 
 Tested on Ubuntu 12.04
 
-	sudo apt-get install python-opencv libncures5 ncurses-term
+	sudo apt-get install python-opencv libncurses5-dev libncurses5 ncurses-term
 
 usage
 -----
@@ -19,3 +19,9 @@ usage
 	# For colored version which may be slower, needs optimizing
 	export TERM=xterm-256color && python color.py WIDTH_IN_CHARS
 
+
+demo
+----
+
+
+<iframe src="http://showterm.io/b90dc46e31526ab227f36" width="100%"></iframe>
