@@ -29,4 +29,4 @@ demo
 
 output
 ------
-![Colorful](/blob/master/colorful.png?raw=true)
+![Colorful]("https://raw.githubusercontent.com/mustafaakin/terminal-webcam/master/colorful.png")
