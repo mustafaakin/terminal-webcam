@@ -29,4 +29,4 @@ demo
 
 output
 ------
-![Colorful]("https://raw.githubusercontent.com/mustafaakin/terminal-webcam/master/colorful.png")
+<a href="https://raw.githubusercontent.com/mustafaakin/terminal-webcam/master/colorful.png">https://raw.githubusercontent.com/mustafaakin/terminal-webcam/master/colorful.png</a>
