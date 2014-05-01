@@ -1,10 +1,9 @@
 import cv
+import os
 import sys
 import math
 import curses
 import signal
-
-stdscr = curses.initscr()
 
 def signal_handler(signal, frame):
     print 'You pressed Ctrl+C!'
@@ -12,28 +11,28 @@ def signal_handler(signal, frame):
     sys.exit(0)
 
 signal.signal(signal.SIGINT, signal_handler)
-width = int(sys.argv[1]) if len(sys.argv) > 1 else 50
 
-# cv.NamedWindow("camera", 1)
+stdscr = curses.initscr()
+palette = [' ', '.', '.', '/', 'c', '(', '@', '#', '8']
 capture = cv.CaptureFromCAM(0)
 
-palette = [' ', '.', '.', '/', 'c', '(', '@', '#', '8']
+# Get the width and height from the terminal (console)
+(rows, columns) = os.popen('stty size', 'r').read().split()
+rows = int(rows)
+columns = int(columns)
 
 while True:
     # Capture the image
     img = cv.QueryFrame(capture)
-    
-    # Resize the image
-    size = cv.GetSize(img)
-    height = size[0] * width / size[1]
 
     thumbnail = cv.CreateImage(
-            (height, width),
+            (columns, rows),
             img.depth,
             img.nChannels
     )
 
     cv.Resize(img, thumbnail)
+
     img = thumbnail
 
     # Print the output
@@ -44,7 +43,7 @@ while True:
             index = int(math.floor(value / (256.0 / (len(palette)))))
 
             try:
-                stdscr.move(x,y)
+                stdscr.move(x, y)
                 stdscr.addch(palette[index])
             except:
                 pass
