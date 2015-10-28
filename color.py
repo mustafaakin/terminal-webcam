@@ -46,7 +46,7 @@ while True:
     for x in xrange(img.height):
         for y in xrange(img.width):
             b, g, r  = img[x, y]
-            value = b * 0.2989 + g * 0.5866 + 0.1145 * r
+            value = b * 0.1145 + g * 0.5866 + r * 0.3989
             index = int(math.floor(value / (256.0 / (len(palette)))))
 
             try:
