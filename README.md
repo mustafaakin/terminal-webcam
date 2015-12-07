@@ -19,7 +19,7 @@ usage
 python capture.py
 
 # For colored version which may be slower, needs optimizing
-export TERM=xterm-256color && python color.py WIDTH_IN_CHARS
+python color.py
 ```
 
 demo

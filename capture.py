@@ -6,7 +6,7 @@ import curses
 import signal
 
 def signal_handler(signal, frame):
-    print 'You pressed Ctrl+C!'
+    print 'You pressed Ctrl + C!'
     curses.endwin()
     sys.exit(0)
 
@@ -39,7 +39,7 @@ while True:
     for x in xrange(img.height):
         for y in xrange(img.width):
             b, g, r = img[x, y]
-            value = 0.1145 * b + g * 0.5866 + r * 0.2989
+            value = b * 0.1145 + g * 0.5866 + r * 0.2989
             index = int(math.floor(value / (256.0 / (len(palette)))))
 
             try:
