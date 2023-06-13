@@ -1,64 +1,90 @@
-import cv
+"""
+This script captures images from a webcam using cv2 and
+displays them as colored ASCII art in the terminal.
+"""
+
 import os
 import sys
 import math
 import curses
 import signal
+import cv2
 
-def signal_handler(signal, frame):
-    print 'You pressed Ctrl + C!'
+
+def signal_handler(sig, _):
+    """
+    Handle Ctrl+C and clean up curses before exiting.
+
+    Args:
+        sig (int): The signal number.
+        _ (Frame): The interrupted stack frame.
+    """
+    print('You pressed Ctrl + C!')
     curses.endwin()
     sys.exit(0)
 
-stdscr = curses.initscr()
-curses.start_color()
-signal.signal(signal.SIGINT, signal_handler)
-capture = cv.CaptureFromCAM(0)
-palette = [' ', '.', '.', '/', 'c', '(', '@', '#', '8']
-pair = 1
-depth = 6
-splitby = (depth - 1) / 1000.0
-(rows, columns) = os.popen('stty size', 'r').read().split()
-rows = int(rows)
-columns = int(columns)
 
-for R in xrange(depth):
-    for G in xrange(depth):
-        for B in xrange(depth):
-            curses.init_color(pair, int(R / splitby), int(G / splitby), int(B / splitby))
-            curses.init_pair(pair, pair, 0)
-            pair = pair + 1
+def initialize_colors(depth):
+    """
+    Initialize color pairs in curses for the given color depth.
 
-while True:
-    img = cv.QueryFrame(capture)
-    size = cv.GetSize(img)
-    height = size[0] * columns / size[1]
+    Args:
+        depth (int): The color depth (number of levels per RGB component).
+    """
+    splitby = (depth - 1) / 1000.0
+    pair = 1
 
-    thumbnail = cv.CreateImage(
-            (columns, rows),
-            img.depth,
-            img.nChannels
-    )
+    for red in range(depth):
+        for green in range(depth):
+            for blue in range(depth):
+                curses.init_color(
+                    pair,
+                    int(red / splitby),
+                    int(green / splitby),
+                    int(blue / splitby)
+                )
+                curses.init_pair(pair, pair, 0)
+                pair += 1
 
-    cv.Resize(img, thumbnail)
-    img = thumbnail
 
-    for x in xrange(img.height):
-        for y in xrange(img.width):
-            b, g, r  = img[x, y]
-            value = b * 0.1145 + g * 0.5866 + r * 0.3989
-            index = int(math.floor(value / (256.0 / (len(palette)))))
+def main():
+    """
+    The main function captures images from the webcam and displays them in the terminal.
+    """
+    stdscr = curses.initscr()
+    curses.start_color()
+    signal.signal(signal.SIGINT, signal_handler)
+    capture = cv2.VideoCapture(0)
+    palette = [' ', '.', '.', '/', 'c', '(', '@', '#', '8']
+    depth = 6
+    rows, columns = map(int, os.popen('stty size', 'r').read().split())
 
-            try:
-                stdscr.move(x, y)
-                r = int( r / 256.0 * 6)
-                g = int( g / 256.0 * 6)
-                b = int( b / 256.0 * 6)
-                pair = r * depth * depth + g * depth + b + 1
+    initialize_colors(depth)
 
-                stdscr.attrset(curses.color_pair(pair))
-                stdscr.addch(palette[index])
-            except:
-                pass
+    while True:
+        img = capture.read()[1]
+        thumbnail = cv2.resize(img, (columns, rows))
 
-    stdscr.refresh()
+        for x in range(thumbnail.shape[0]):
+            for y in range(thumbnail.shape[1]):
+                blue, green, red = thumbnail[x, y]
+                value = blue * 0.1145 + green * 0.5866 + red * 0.3989
+                index = int(math.floor(value / (256.0 / len(palette)))) % len(palette)
+
+                try:
+                    stdscr.move(x, y)
+                    red = int(red / 256.0 * 6)
+                    green = int(green / 256.0 * 6)
+                    blue = int(blue / 256.0 * 6)
+                    pair = red * depth * depth + green * depth + blue + 1
+
+                    stdscr.attrset(curses.color_pair(pair))
+                    stdscr.addch(palette[index])
+                except curses.error:
+                    pass
+
+        stdscr.refresh()
+
+
+if __name__ == "__main__":
+    main()
